@@ -60,6 +60,29 @@ exports.signin = function*(next){
 
 };
 
+// 修改密码
+exports.repassword = function*(next){
+  var data = this.request.body;
+  var msg = '修改成功!';
+
+  var user = yield User.find({name: data.name});
+  if(user.password === md5(data.password)){
+    user.password = md5(data.repassword);
+    user.token = new Buffer(user.name+':'+user.password).toString("base64");
+    yield user.save();
+    user.token = null;
+    this.body = {
+      code: '200',
+      msg: msg,
+      data: user
+    };
+  }else{
+    msg = '原密码错误!';
+    this.redirect('/?msg='+msg);
+  }
+
+};
+
 function md5 (str) {
   return crypto.createHash('md5').update(str).digest('hex');
 }

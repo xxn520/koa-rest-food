@@ -22,7 +22,7 @@ module.exports = function(app) {
     }
   };
   var statelessauthOptions = {
-    ignorePaths: ['/', '/signup', 'signin']
+    ignorePaths: ['/', '/signup', '/signin', '/repassword']
   };
   // error handle
   app.use(errorhandler());
